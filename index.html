@@ -338,33 +338,12 @@
     background: linear-gradient(160deg, #12122a, #08080f);
     border: 1px solid var(--line);
     overflow:hidden;
-    cursor:pointer;
   }
   .video-frame iframe{
     position:absolute; inset:0;
     width:100%; height:100%;
     border:0;
   }
-  .video-play{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    background: radial-gradient(ellipse at center, rgba(91,123,255,0.14), transparent 70%);
-  }
-  .video-play-btn{
-    width: 62px; height: 62px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    transition: transform .2s ease, background .2s ease, border-color .2s ease;
-  }
-  .video-frame:hover .video-play-btn{
-    transform: scale(1.08);
-    background: var(--electric);
-    border-color: var(--electric);
-  }
-  .video-play-btn svg{ width:20px; height:20px; fill: var(--white); margin-left:3px; }
-  .video-frame:hover .video-play-btn svg{ fill:#06060f; }
   .video-title{
     margin-top: 14px;
     font-weight: 600;
@@ -601,22 +580,22 @@
     </div>
     <div class="video-grid">
       <div class="video-card">
-        <div class="video-frame" data-yt="esLxvdd7EZw">
-          <div class="video-play"><div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/esLxvdd7EZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="video-title">Live Performance Clip 1</div>
         <div class="video-sub"><a href="https://www.youtube.com/watch?v=esLxvdd7EZw" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>
       </div>
       <div class="video-card">
-        <div class="video-frame" data-yt="wp0o4sMotGQ">
-          <div class="video-play"><div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/wp0o4sMotGQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="video-title">Live Performance Clip 2</div>
         <div class="video-sub"><a href="https://www.youtube.com/watch?v=wp0o4sMotGQ" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>
       </div>
       <div class="video-card">
-        <div class="video-frame" data-yt="KI5pr56qnAI">
-          <div class="video-play"><div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/KI5pr56qnAI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="video-title">Live Performance Clip 3</div>
         <div class="video-sub"><a href="https://www.youtube.com/watch?v=KI5pr56qnAI" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>
@@ -624,17 +603,6 @@
     </div>
   </div>
 </section>
-
-<script>
-  (function(){
-    document.querySelectorAll('.video-frame').forEach(function(frame){
-      frame.addEventListener('click', function(){
-        var id = frame.getAttribute('data-yt');
-        frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" title="Soul Cats Band live video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
-      }, { once: true });
-    });
-  })();
-</script>
 
 <section id="book">
   <div class="wrap book-grid">
