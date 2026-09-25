@@ -629,7 +629,7 @@
         <li><span>Follow</span><a href="https://www.facebook.com/TheSoulCatsBand" target="_blank" rel="noopener">@thesoulcatsband</a></li>
       </ul>
     </div>
-    <form class="book-form" id="bookForm" action="https://formsubmit.co/ajax/thesoulcatsmusic@gmail.com" method="POST">
+    <form class="book-form" id="bookForm" action="https://formsubmit.co/thesoulcatsmusic@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="New booking request — Soul Cats Band site">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_autoresponse" value="Thanks for reaching out to The Soul Cats Band! We received your booking request and will get back to you within a couple of days. If it's urgent, call us at (310) 710-0560.">
@@ -662,44 +662,9 @@
         <textarea id="details" name="Details" placeholder="Venue, guest count, timing..."></textarea>
       </div>
       <button class="btn btn-primary" type="submit">Send Booking Request</button>
-      <div id="bookFormStatus" style="margin-top:12px; font-size:0.9rem; color:var(--dim);"></div>
     </form>
   </div>
 </section>
-
-<script>
-  (function(){
-    var form = document.getElementById('bookForm');
-    var status = document.getElementById('bookFormStatus');
-    var btn = form.querySelector('.btn');
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-      status.textContent = '';
-      fetch(form.action, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      })
-      .then(function(res){ return res.json().then(function(data){ return { ok: res.ok, data: data }; }); })
-      .then(function(result){
-        if (result.ok) {
-          btn.textContent = 'Request sent';
-          status.textContent = 'Thanks — we\'ll get back to you soon.';
-          form.reset();
-        } else {
-          throw new Error((result.data && result.data.message) || 'Send failed');
-        }
-      })
-      .catch(function(){
-        btn.disabled = false;
-        btn.textContent = 'Send Booking Request';
-        status.textContent = 'Something went wrong — please email us directly at thesoulcatsmusic@gmail.com.';
-      });
-    });
-  })();
-</script>
 
 <footer>
   <div class="wrap">
