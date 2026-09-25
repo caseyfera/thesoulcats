@@ -629,18 +629,25 @@
         <li><span>Follow</span><a href="https://www.facebook.com/TheSoulCatsBand" target="_blank" rel="noopener">@thesoulcatsband</a></li>
       </ul>
     </div>
-    <form class="book-form" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Request sent';">
+    <form class="book-form" id="bookForm" action="https://formsubmit.co/ajax/thesoulcatsmusic@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="New booking request — Soul Cats Band site">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="field">
         <label for="name">Your name</label>
-        <input id="name" type="text" placeholder="Jamie Rivera" required>
+        <input id="name" name="Name" type="text" placeholder="Jamie Rivera" required>
+      </div>
+      <div class="field">
+        <label for="email">Your email</label>
+        <input id="email" name="Email" type="email" placeholder="jamie@email.com" required>
       </div>
       <div class="field">
         <label for="date">Event date</label>
-        <input id="date" type="date">
+        <input id="date" name="Event date" type="date">
       </div>
       <div class="field">
         <label for="type">Event type</label>
-        <select id="type">
+        <select id="type" name="Event type">
           <option>Wedding</option>
           <option>Private party</option>
           <option>Winery / brewery</option>
@@ -651,12 +658,47 @@
       </div>
       <div class="field">
         <label for="details">Tell us about it</label>
-        <textarea id="details" placeholder="Venue, guest count, timing..."></textarea>
+        <textarea id="details" name="Details" placeholder="Venue, guest count, timing..."></textarea>
       </div>
       <button class="btn btn-primary" type="submit">Send Booking Request</button>
+      <div id="bookFormStatus" style="margin-top:12px; font-size:0.9rem; color:var(--dim);"></div>
     </form>
   </div>
 </section>
+
+<script>
+  (function(){
+    var form = document.getElementById('bookForm');
+    var status = document.getElementById('bookFormStatus');
+    var btn = form.querySelector('.btn');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      })
+      .then(function(res){ return res.json().then(function(data){ return { ok: res.ok, data: data }; }); })
+      .then(function(result){
+        if (result.ok) {
+          btn.textContent = 'Request sent';
+          status.textContent = 'Thanks — we\'ll get back to you soon.';
+          form.reset();
+        } else {
+          throw new Error((result.data && result.data.message) || 'Send failed');
+        }
+      })
+      .catch(function(){
+        btn.disabled = false;
+        btn.textContent = 'Send Booking Request';
+        status.textContent = 'Something went wrong — please email us directly at thesoulcatsmusic@gmail.com.';
+      });
+    });
+  })();
+</script>
 
 <footer>
   <div class="wrap">
