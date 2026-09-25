@@ -514,18 +514,69 @@
       <h2>Catch us on the Central Coast.</h2>
       <p>A running list of public shows — private events booked separately below.</p>
     </div>
-    <div class="show-list">
+    <div class="show-list" id="showList">
       <div class="show-row">
-        <div class="show-date"><span class="day">18</span>SEP</div>
-        <div>
-          <div class="show-venue">Carhartt Family Wines</div>
-          <div class="show-loc">Los Olivos, CA · 5:00 PM</div>
-        </div>
-    
-     
-   <iframe src="https://calendar.google.com/calendar/embed?src=thesoulcatsmusic%40gmail.com&ctz=UTC" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        <div style="grid-column: 1 / -1; color:var(--dim);">Loading upcoming shows…</div>
+      </div>
+    </div>
+    <p class="shows-note" id="showListError" style="display:none;">Couldn't load upcoming shows right now — check our <a href="https://www.facebook.com/TheSoulCatsBand" target="_blank" rel="noopener">Facebook page</a> for the latest.</p>
   </div>
 </section>
+
+<script>
+  (function(){
+    // ---- Configure these two lines ----
+    var CALENDAR_ID = 'thesoulcatsmusic@gmail.com'; // must be set to "Public" in Google Calendar settings
+    var API_KEY = 'AIzaSyCcEYg0PRMUpqvm6kX7545zzV8BfB_1k94';        // Google Cloud API key restricted to Calendar API + this domain
+    // ------------------------------------
+    var MAX_EVENTS = 8;
+
+    var listEl = document.getElementById('showList');
+    var errEl = document.getElementById('showListError');
+    var monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, function(c){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+      });
+    }
+
+    var url = 'https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(CALENDAR_ID) +
+      '/events?key=' + encodeURIComponent(API_KEY) +
+      '&timeMin=' + encodeURIComponent(new Date().toISOString()) +
+      '&singleEvents=true&orderBy=startTime&maxResults=' + MAX_EVENTS;
+
+    fetch(url)
+      .then(function(res){ if(!res.ok) throw new Error('Calendar fetch failed'); return res.json(); })
+      .then(function(data){
+        var items = data.items || [];
+        if(!items.length){
+          listEl.innerHTML = '<div class="show-row"><div style="grid-column:1 / -1; color:var(--dim);">No upcoming shows booked right now — check back soon.</div></div>';
+          return;
+        }
+        listEl.innerHTML = items.map(function(ev){
+          var start = ev.start.dateTime || ev.start.date;
+          var d = new Date(start);
+          var day = d.getDate();
+          var month = monthNames[d.getMonth()];
+          var timeStr = ev.start.dateTime ? d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : '';
+          var loc = [ev.location, timeStr].filter(Boolean).map(escapeHtml).join(' · ');
+          return '<div class="show-row">' +
+            '<div class="show-date"><span class="day">' + day + '</span>' + month + '</div>' +
+            '<div>' +
+              '<div class="show-venue">' + escapeHtml(ev.summary || 'Live show') + '</div>' +
+              '<div class="show-loc">' + loc + '</div>' +
+            '</div>' +
+            (ev.htmlLink ? '<a class="btn btn-ghost" href="' + ev.htmlLink + '" target="_blank" rel="noopener">Details</a>' : '<span></span>') +
+          '</div>';
+        }).join('');
+      })
+      .catch(function(){
+        listEl.innerHTML = '';
+        if (errEl) errEl.style.display = 'block';
+      });
+  })();
+</script>
 
 <section id="gallery">
   <div class="wrap">
