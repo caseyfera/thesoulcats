@@ -527,7 +527,7 @@
   (function(){
     // ---- Configure these two lines ----
     var CALENDAR_ID = 'thesoulcatsmusic@gmail.com'; // must be set to "Public" in Google Calendar settings
-    var API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';        // Google Cloud API key restricted to Calendar API + this domain
+    var API_KEY = 'AIzaSyCcEYg0PRMUpqvm6kX7545zzV8BfB_1k94';        // Google Cloud API key restricted to Calendar API + this domain
     // ------------------------------------
     var MAX_EVENTS = 8;
 
@@ -555,18 +555,8 @@
           return;
         }
         listEl.innerHTML = items.map(function(ev){
-          var d;
-          if (ev.start.dateTime) {
-            // Timed event: dateTime includes an explicit timezone offset, so this is safe.
-            d = new Date(ev.start.dateTime);
-          } else {
-            // All-day event: ev.start.date is a bare "YYYY-MM-DD" with no timezone.
-            // new Date("YYYY-MM-DD") parses it as UTC midnight, which then rolls back
-            // to the previous day once converted to local time (in any US timezone).
-            // Parse the pieces manually and build a local-time date instead.
-            var dateParts = ev.start.date.split('-').map(Number);
-            d = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-          }
+          var start = ev.start.dateTime || ev.start.date;
+          var d = new Date(start);
           var day = d.getDate();
           var month = monthNames[d.getMonth()];
           var timeStr = ev.start.dateTime ? d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : '';
