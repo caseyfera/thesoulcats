@@ -742,7 +742,7 @@
 </script>
 
 <script>
-  (function(){
+  document.addEventListener('DOMContentLoaded', function(){
     // ---------- Mobile hamburger menu ----------
     var menuBtn = document.getElementById('menuToggle');
     var mobileMenu = document.getElementById('mobileMenu');
@@ -881,7 +881,7 @@
         customTypeWrap.style.display = (typeSelect.value === 'Other') ? 'block' : 'none';
       });
     }
-  })();
+  });
 </script>
 
 <section id="gallery">
