@@ -97,7 +97,44 @@
     text-decoration:none;
     white-space:nowrap;
   }
-  .menu-toggle{ display:none; }
+  .menu-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    width:38px; height:38px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    flex-shrink:0;
+  }
+  .menu-toggle span{
+    display:block;
+    width:22px; height:2px;
+    background: var(--white);
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .menu-toggle.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .menu-toggle.open span:nth-child(2){ opacity: 0; }
+  .menu-toggle.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu{
+    display:none;
+    flex-direction:column;
+    background: rgba(5,5,7,0.97);
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    padding: 16px 28px;
+    text-decoration:none;
+    color: var(--dim);
+    font-size:1rem;
+    border-top: 1px solid var(--line);
+  }
+  .mobile-menu a:hover{ color: var(--white); }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -361,6 +398,100 @@
     .video-grid{ grid-template-columns: 1fr; }
   }
 
+  /* ---------- Setlist ---------- */
+  #setlist{ background: var(--near-black); }
+  .setlist-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+  .setlist-card{
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 22px 24px;
+  }
+  .setlist-card h3{
+    font-size: 1.25rem;
+    color: var(--electric);
+    margin-bottom: 12px;
+  }
+  .setlist-card ol{
+    margin:0; padding-left: 20px;
+    color: var(--white);
+    font-size: 0.92rem;
+    line-height: 1.85;
+  }
+  .setlist-note{
+    margin-top: 26px;
+    color: var(--dim);
+    font-size: 0.9rem;
+    max-width: 620px;
+  }
+
+  /* ---------- Build-your-set ---------- */
+  .builder-wrap{
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 32px;
+    margin-bottom: 56px;
+  }
+  .builder-intro{ max-width: 660px; margin-bottom: 26px; }
+  .builder-intro p{ color: var(--dim); margin-top: 10px; font-size: 0.98rem; }
+  .builder-groups{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 28px;
+  }
+  .builder-group-title{
+    font-family:'Big Shoulders Display';
+    font-weight:700;
+    color: var(--electric);
+    font-size: 1.02rem;
+    margin-bottom: 8px;
+  }
+  .builder-check{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    font-size: 0.87rem;
+    color: var(--white);
+    padding: 5px 0;
+    cursor:pointer;
+  }
+  .builder-check input{ margin-top:3px; accent-color: var(--electric); flex-shrink:0; }
+  .order-panel{ border-top: 1px solid var(--line); padding-top: 22px; }
+  .order-panel h4{
+    font-family:'Big Shoulders Display';
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+  .order-panel p{ color: var(--dim); font-size: 0.88rem; margin: 0 0 16px; }
+  #customSetOrder{ list-style:none; margin:0; padding:0; }
+  #customSetOrder li{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.94rem;
+  }
+  .order-empty{ color: var(--dim); font-style:italic; border-bottom:none !important; }
+  .order-controls button{
+    background:none;
+    border:1px solid var(--line);
+    color: var(--white);
+    width:28px; height:28px;
+    margin-left:6px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:0.9rem;
+  }
+  .order-controls button:hover{ border-color: var(--electric); color: var(--electric); }
+  .requests-note{
+    color: var(--dim);
+    font-size: 0.82rem;
+    margin: -10px 0 18px;
+  }
+
   /* ---------- Booking / contact ---------- */
   #book{
     background:
@@ -429,9 +560,16 @@
 
   @media (max-width: 860px){
     .navlinks{ display:none; }
+    .menu-toggle{ display:flex; }
     .about-grid, .book-grid{ grid-template-columns: 1fr; gap: 40px; }
     .show-row{ grid-template-columns: 70px 1fr; }
     .show-row .btn{ grid-column: 1 / -1; text-align:center; margin-top:8px; }
+    .setlist-grid{ grid-template-columns: 1fr 1fr; }
+    .builder-groups{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px){
+    .setlist-grid{ grid-template-columns: 1fr; }
+    .builder-groups{ grid-template-columns: 1fr; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -448,12 +586,25 @@
     <div class="navlinks">
       <a href="#about">About</a>
       <a href="#sound">The Sound</a>
+      <a href="#setlist">Setlist</a>
       <a href="#shows">Shows</a>
       <a href="#gallery">Gallery</a>
       <a href="#videos">Videos</a>
       <a href="#book">Contact</a>
     </div>
     <a class="navcta" href="#book">Book the Band</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#sound">The Sound</a>
+    <a href="#setlist">Setlist</a>
+    <a href="#shows">Shows</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#videos">Videos</a>
+    <a href="#book">Book / Contact</a>
   </div>
 </nav>
 
@@ -504,6 +655,18 @@
       <span class="tag">Horn-Driven Rock</span>
       <span class="tag">Party Anthems</span>
     </div>
+  </div>
+</section>
+
+<section id="setlist">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Current setlist</div>
+      <h2>What we're playing right now.</h2>
+      <p>Our current rotation — three sets built to take a crowd from listening to dancing and keep them there.</p>
+    </div>
+    <div class="setlist-grid" id="setlistDisplay"></div>
+    <p class="setlist-note">The setlist evolves show to show as we read the room, so treat this as a guide to our vibe rather than a fixed script. Booking an event? Scroll down to build your own version of the set — you can pick songs, put them in order, and add requests.</p>
   </div>
 </section>
 
@@ -575,6 +738,149 @@
         listEl.innerHTML = '';
         if (errEl) errEl.style.display = 'block';
       });
+  })();
+</script>
+
+<script>
+  (function(){
+    // ---------- Mobile hamburger menu ----------
+    var menuBtn = document.getElementById('menuToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function(){
+        var isOpen = mobileMenu.classList.toggle('open');
+        menuBtn.classList.toggle('open', isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      mobileMenu.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){
+          mobileMenu.classList.remove('open');
+          menuBtn.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // ---------- Current setlist (single source of truth) ----------
+    var SETLIST = {
+      "Set 1": ["We Will Rock You","Born to Be Wild","Old Time Rock & Roll","Gimme Some Lovin'","Hard to Handle / Walk This Way","Dance to the Music","Treasure","Love Shack","Mustang Sally","Wooly Bully"],
+      "Set 2": ["Play That Funky Music","You Sexy Thing","Black Magic Woman","Smooth Operator","Fly Like an Eagle","War / Money, Money, Money","Hold On I'm Comin'","Respect","Satisfaction","Knock on Wood"],
+      "Set 3": ["I Feel Good","Soul Cat Strut","Doin' It Right","House of the Rising Sun","Chain of Fools / Papa Was a Rollin' Stone","Brickhouse","I Wish","Valerie","25 or 6 to 4","I'm a Man"],
+      "Extras": ["Crazy (Gnarls Barkley)","Shout","Proud Mary","River Deep – Mountain High"]
+    };
+
+    var displayEl = document.getElementById('setlistDisplay');
+    var builderEl = document.getElementById('setlistBuilder');
+    var orderListEl = document.getElementById('customSetOrder');
+    var hiddenField = document.getElementById('customSetlistField');
+    var order = [];
+
+    function renderOrder(){
+      if (!orderListEl) return;
+      orderListEl.innerHTML = '';
+      if (order.length === 0) {
+        var empty = document.createElement('li');
+        empty.className = 'order-empty';
+        empty.textContent = "Pick songs above and they'll line up here.";
+        orderListEl.appendChild(empty);
+      } else {
+        order.forEach(function(song, i){
+          var li = document.createElement('li');
+          var label = document.createElement('span');
+          label.textContent = (i + 1) + '. ' + song;
+          var controls = document.createElement('span');
+          controls.className = 'order-controls';
+          var up = document.createElement('button');
+          up.type = 'button';
+          up.textContent = '\u2191';
+          up.setAttribute('aria-label', 'Move ' + song + ' up');
+          up.addEventListener('click', function(){
+            if (i > 0) {
+              var tmp = order[i - 1];
+              order[i - 1] = order[i];
+              order[i] = tmp;
+              renderOrder();
+            }
+          });
+          var down = document.createElement('button');
+          down.type = 'button';
+          down.textContent = '\u2193';
+          down.setAttribute('aria-label', 'Move ' + song + ' down');
+          down.addEventListener('click', function(){
+            if (i < order.length - 1) {
+              var tmp = order[i + 1];
+              order[i + 1] = order[i];
+              order[i] = tmp;
+              renderOrder();
+            }
+          });
+          controls.appendChild(up);
+          controls.appendChild(down);
+          li.appendChild(label);
+          li.appendChild(controls);
+          orderListEl.appendChild(li);
+        });
+      }
+      if (hiddenField) {
+        hiddenField.value = order.map(function(s, i){ return (i + 1) + '. ' + s; }).join('\n');
+      }
+    }
+
+    Object.keys(SETLIST).forEach(function(setName){
+      if (displayEl) {
+        var card = document.createElement('div');
+        card.className = 'setlist-card';
+        var h3 = document.createElement('h3');
+        h3.textContent = setName;
+        card.appendChild(h3);
+        var ol = document.createElement('ol');
+        SETLIST[setName].forEach(function(song){
+          var li = document.createElement('li');
+          li.textContent = song;
+          ol.appendChild(li);
+        });
+        card.appendChild(ol);
+        displayEl.appendChild(card);
+      }
+
+      if (builderEl) {
+        var group = document.createElement('div');
+        group.className = 'builder-group';
+        var title = document.createElement('div');
+        title.className = 'builder-group-title';
+        title.textContent = setName;
+        group.appendChild(title);
+        SETLIST[setName].forEach(function(song){
+          var label = document.createElement('label');
+          label.className = 'builder-check';
+          var cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.value = song;
+          cb.addEventListener('change', function(){
+            if (cb.checked) {
+              order.push(song);
+            } else {
+              order = order.filter(function(s){ return s !== song; });
+            }
+            renderOrder();
+          });
+          label.appendChild(cb);
+          label.appendChild(document.createTextNode(' ' + song));
+          group.appendChild(label);
+        });
+        builderEl.appendChild(group);
+      }
+    });
+    renderOrder();
+
+    // ---------- "Other" event type reveal ----------
+    var typeSelect = document.getElementById('type');
+    var customTypeWrap = document.getElementById('customEventTypeWrap');
+    if (typeSelect && customTypeWrap) {
+      typeSelect.addEventListener('change', function(){
+        customTypeWrap.style.display = (typeSelect.value === 'Other') ? 'block' : 'none';
+      });
+    }
   })();
 </script>
 
@@ -668,6 +974,21 @@
 </section>
 
 <section id="book">
+  <div class="wrap">
+    <div class="builder-wrap">
+      <div class="builder-intro">
+        <div class="eyebrow">Custom playlist</div>
+        <h2 style="font-size:clamp(1.7rem,3.2vw,2.2rem);">Build your own set.</h2>
+        <p>Booking us for your event? Check off the songs you'd love to hear and put them in whatever order you like using the arrows below. Your picks and running order get sent along with your booking request as a starting point — our set list is always shaped around the crowd and the room on the night, so think of this as your wishlist rather than a locked script.</p>
+      </div>
+      <div class="builder-groups" id="setlistBuilder"></div>
+      <div class="order-panel">
+        <h4>Your set order</h4>
+        <p>Tap a song above to add it, then use ↑ / ↓ to arrange it.</p>
+        <ol id="customSetOrder"></ol>
+      </div>
+    </div>
+  </div>
   <div class="wrap book-grid">
     <div>
       <div class="eyebrow">Booking</div>
@@ -708,10 +1029,20 @@
           <option>Other</option>
         </select>
       </div>
+      <div class="field" id="customEventTypeWrap" style="display:none;">
+        <label for="customEventType">What kind of event is it?</label>
+        <input id="customEventType" name="Custom Event Type" type="text" placeholder="Car show, block party, fundraiser...">
+      </div>
       <div class="field">
         <label for="details">Tell us about it</label>
         <textarea id="details" name="Details" placeholder="Venue, guest count, timing..."></textarea>
       </div>
+      <div class="field">
+        <label for="requests">Song requests <span style="color:var(--dim); font-weight:400;">(optional)</span></label>
+        <textarea id="requests" name="Song Requests" placeholder="Anything else you'd love to hear that's not on our setlist?"></textarea>
+      </div>
+      <p class="requests-note">Requests aren't guaranteed — we build the final set around the room and what keeps the dance floor moving, so requests are played at the band's discretion.</p>
+      <input type="hidden" id="customSetlistField" name="Custom Set Order">
       <button class="btn btn-primary" type="submit">Send Booking Request</button>
     </form>
   </div>
